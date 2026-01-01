@@ -1,0 +1,44 @@
+name: Release Obsidian Plugin
+
+on:
+  push:
+    tags:
+      - "*" # Push events to matching refs/tags/*
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.x"
+
+      - name: Build Plugin
+        run: |
+          cd packages/obsidian-plugin
+          npm install
+          npm run build
+          mkdir release
+          cp main.js manifest.json release/
+          # Copy styles.css if it exists, otherwise ignore
+          if [ -f styles.css ]; then cp styles.css release/; fi
+          # Copy versions.json
+          cp versions.json release/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            packages/obsidian-plugin/release/main.js
+            packages/obsidian-plugin/release/manifest.json
+            packages/obsidian-plugin/release/styles.css
+            packages/obsidian-plugin/release/versions.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
