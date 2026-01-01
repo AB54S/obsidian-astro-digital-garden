@@ -8,7 +8,7 @@ const links = [
 
 <header class="py-6 mb-8 border-b border-zinc-200 dark:border-zinc-800">
 	<nav class="container mx-auto px-4 max-w-3xl flex justify-between items-center">
-		<a href="/" class="text-xl font-bold tracking-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+		<a href={import.meta.env.BASE_URL} class="text-xl font-bold tracking-tight hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
 			Digital Garden
 		</a>
 		<ul class="flex gap-6 text-sm font-medium text-zinc-600 dark:text-zinc-400">
@@ -16,7 +16,7 @@ const links = [
 				links.map((link) => (
 					<li>
 						<a
-							href={link.href}
+							href={import.meta.env.BASE_URL + link.href.substring(1)}
 							class="hover:text-black dark:hover:text-white transition-colors"
 						>
 							{link.label}
@@ -27,4 +27,3 @@ const links = [
 		</ul>
 	</nav>
 </header>
-
